@@ -422,8 +422,21 @@ function getSpiralMatrix(size) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const matrixCopy = new Array(matrix.length);
+  for (let i = 0; i < matrix.length; i += 1) {
+    matrixCopy[i] = [...matrix[i]];
+  }
+
+  const resMatrix = matrix;
+
+  for (let i = 0; i < resMatrix.length; i += 1) {
+    for (let j = 0; j < resMatrix[i].length; j += 1) {
+      resMatrix[i][j] = matrixCopy[matrixCopy.length - 1 - j][i];
+    }
+  }
+
+  return resMatrix;
 }
 
 /**
@@ -440,8 +453,31 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const resArr = arr;
+  let n = 1;
+  for (let i = 0; i < resArr.length; i += n) {
+    let min = 1000;
+    let indexMinArr = [];
+
+    for (let j = i; j < resArr.length; j += 1) {
+      if (resArr[j] < min) {
+        min = resArr[j];
+        indexMinArr = [j];
+      } else if (resArr[j] === min) {
+        indexMinArr[indexMinArr.length] = j;
+      }
+    }
+
+    for (let k = 0; k < indexMinArr.length; k += 1) {
+      const tmp = resArr[i + k];
+      resArr[i + k] = min;
+      resArr[indexMinArr[k]] = tmp;
+    }
+    n = indexMinArr.length;
+  }
+
+  return resArr;
 }
 
 /**
