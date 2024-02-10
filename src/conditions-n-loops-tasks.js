@@ -497,8 +497,28 @@ function sortByAsc(arr) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let newStr = str;
+  let iterationsQty = iterations;
+
+  for (let i = 1; i <= iterationsQty; i += 1) {
+    let resStr = '';
+    let oddStr = '';
+
+    for (let j = 0; j < newStr.length; j += 1) {
+      if (j % 2 === 0) {
+        resStr += newStr[j];
+      } else {
+        oddStr += newStr[j];
+      }
+    }
+    resStr += oddStr;
+    newStr = resStr;
+    if (newStr === str) {
+      iterationsQty = (iterations % i) + i;
+    }
+  }
+  return newStr;
 }
 
 /**
@@ -518,8 +538,55 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const resNum = number;
+  let numStr = String(number);
+  const numArr = [...numStr];
+
+  let dgt = numArr[numArr.length - 1];
+
+  for (let i = numArr.length - 2; i >= 0; i -= 1) {
+    if (numArr[i] < dgt) {
+      const smallerDgt = numArr[i];
+
+      let swopDgt = numArr[i + 1];
+      let swopIdx = i + 1;
+      for (let j = i + 2; j < numArr.length; j += 1) {
+        if (numArr[j] > smallerDgt && numArr[j] < swopDgt) {
+          swopDgt = numArr[j];
+          swopIdx = j;
+        }
+      }
+      numArr[i] = swopDgt;
+      numArr[swopIdx] = smallerDgt;
+
+      for (let k = i + 1; k < numArr.length; k += 1) {
+        let min = '9';
+        let indexMin = i;
+
+        for (let l = k; l < numArr.length; l += 1) {
+          if (numArr[l] <= min) {
+            min = numArr[l];
+            indexMin = l;
+          }
+        }
+
+        const tmp = numArr[k];
+        numArr[k] = min;
+        numArr[indexMin] = tmp;
+      }
+
+      numStr = '';
+      for (let m = 0; m < numArr.length; m += 1) {
+        numStr += numArr[m];
+      }
+
+      return Number(numStr);
+    }
+    dgt = numStr[i];
+  }
+
+  return resNum;
 }
 
 module.exports = {
